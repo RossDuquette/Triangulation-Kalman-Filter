@@ -25,8 +25,8 @@ int main(int argc, char* argv[])
     beacons.push_back(beacon3);
     beacons.push_back(beacon4);
 
-    float noise = 0; // Std dev of gaussian noise on distance measurements
-    ParticleFilter particle(0);
+    float noise = 1; // Std dev of gaussian noise on distance measurements
+    ParticleFilter particle(noise);
 
     Viewer viewer(vehicle, beacons, particle, MAX_DIST_M);
     float speed = 0.2;
