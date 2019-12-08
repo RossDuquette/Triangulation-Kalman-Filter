@@ -4,25 +4,29 @@
 #include <vector>
 
 #include "beacon.h"
+#include "particle_filter.h"
 #include "vehicle.h"
 
 class Viewer
 {
     public:
-        Viewer(std::vector<Vehicle>& vehicles, std::vector<Beacon>& beacons,
-               float size_m);
+        Viewer(Vehicle& vehicle, std::vector<Beacon>& beacons,
+               ParticleFilter& particle, float size_m);
         void update();
 
     private:
         float m_to_pix(float m);
         void draw_square(float x, float y, float size);
         void draw_circle(float x, float y, float r);
-        void draw_vehicles();
+        void draw_vehicle();
         void draw_beacons();
         void draw_distances();
+        void draw_particles();
+        void draw_estimate();
 
-        std::vector<Vehicle>& vehicles_;
+        Vehicle& vehicle_;
         std::vector<Beacon>& beacons_;
+        ParticleFilter& particle_;
         const float size_m_;
         const int size_pix_;
 

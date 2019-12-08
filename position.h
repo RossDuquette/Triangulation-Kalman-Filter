@@ -17,5 +17,8 @@ class Pose2D : public Position2D
 };
 
 float distance(const Position2D& pos1, const Position2D& pos2);
+void get_circle_intersections(const Position2D& center1, const float rad1,
+                              const Position2D& center2, const float rad2,
+                              Position2D* intersections);
 
 #endif

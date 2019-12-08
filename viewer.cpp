@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <GL/glu.h>
@@ -6,10 +5,11 @@
 
 #include "viewer.h"
 
-Viewer::Viewer(std::vector<Vehicle>& vehicles, std::vector<Beacon>& beacons,
-               float size_m) :
-    vehicles_(vehicles),
+Viewer::Viewer(Vehicle& vehicle, std::vector<Beacon>& beacons,
+               ParticleFilter& particle, float size_m) :
+    vehicle_(vehicle),
     beacons_(beacons),
+    particle_(particle),
     size_m_(size_m),
     size_pix_(800)
 {
@@ -27,9 +27,11 @@ Viewer::Viewer(std::vector<Vehicle>& vehicles, std::vector<Beacon>& beacons,
 void Viewer::update()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    draw_vehicles();
+    draw_vehicle();
     draw_beacons();
     draw_distances();
+    draw_particles();
+    draw_estimate();
     glutSwapBuffers();
 }
 
@@ -62,14 +64,12 @@ void Viewer::draw_circle(float x, float y, float r)
     glEnd();
 }
 
-void Viewer::draw_vehicles()
+void Viewer::draw_vehicle()
 {
     const float VEHICLE_SIZE_M = 1;
     set_colour(BLACK);
-    for (int i = 0; i < vehicles_.size(); i++) {
-        Pose2D& pose = vehicles_[i].get_pose();
-        draw_square(pose.x, pose.y, VEHICLE_SIZE_M);
-    }
+    Pose2D pose = vehicle_.get_pose();
+    draw_square(pose.x, pose.y, VEHICLE_SIZE_M);
 }
 
 void Viewer::draw_beacons()
@@ -77,7 +77,7 @@ void Viewer::draw_beacons()
     const float BEACON_SIZE_M = 0.4;
     set_colour(BLUE);
     for (int i = 0; i < beacons_.size(); i++) {
-        Position2D& pos = beacons_[i].get_position();
+        Position2D pos = beacons_[i].get_position();
         draw_square(pos.x, pos.y, BEACON_SIZE_M);
     }
 }
@@ -85,12 +85,28 @@ void Viewer::draw_beacons()
 void Viewer::draw_distances()
 {
     set_colour(RED);
-    for (int i = 0; i < vehicles_.size(); i++) {
-        for (int j = 0; j < beacons_.size(); j++) {
-            Position2D& pos = beacons_[j].get_position();
-            draw_circle(pos.x, pos.y, distance(pos, vehicles_[i].get_pose()));
-        }
+    for (int i = 0; i < beacons_.size(); i++) {
+        Position2D pos = beacons_[i].get_position();
+        draw_circle(pos.x, pos.y, distance(pos, vehicle_.get_pose()));
     }
+}
+
+void Viewer::draw_particles()
+{
+    const float PARTICLE_SIZE_M = 0.3;
+    set_colour(GREEN);
+    std::vector<Position2D>& particles = particle_.get_particles();
+    for (int i = 0; i < particles.size(); i++) {
+        draw_square(particles[i].x, particles[i].y, PARTICLE_SIZE_M);
+    }
+}
+
+void Viewer::draw_estimate()
+{
+    const float ESTIMATE_RADIUS_M = 0.7;
+    set_colour(BLACK);
+    Pose2D pose = particle_.get_estimate();
+    draw_circle(pose.x, pose.y, ESTIMATE_RADIUS_M);
 }
 
 void Viewer::set_colour(float r, float g, float b)

@@ -2,12 +2,12 @@
 
 #include "vehicle.h"
 
-Vehicle::Vehicle(Pose2D& pose) :
+Vehicle::Vehicle(Pose2D pose) :
     pose_(pose)
 {
 }
 
-Pose2D& Vehicle::get_pose()
+Pose2D Vehicle::get_pose()
 {
     return pose_;
 }

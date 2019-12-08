@@ -6,11 +6,11 @@
 class Beacon
 {
     public:
-        Beacon(Position2D& position);
-        Position2D& get_position();
+        Beacon(Position2D position);
+        Position2D get_position();
 
     private:
-        Position2D& position_;
+        Position2D position_;
 };
 
 #endif
