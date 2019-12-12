@@ -94,7 +94,7 @@ void Viewer::draw_distances()
 void Viewer::draw_particles()
 {
     const float PARTICLE_SIZE_M = 0.3;
-    set_colour(GREEN);
+    set_colour(BLUE);
     std::vector<Position2D>& particles = particle_.get_particles();
     for (int i = 0; i < particles.size(); i++) {
         draw_square(particles[i].x, particles[i].y, PARTICLE_SIZE_M);
