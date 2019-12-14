@@ -1,7 +1,6 @@
 #ifndef PARTICLE_FILTER_H_
 #define PARTICLE_FILTER_H_
 
-#include <random>
 #include <vector>
 
 #include "beacon.h"
@@ -13,8 +12,8 @@
 class ParticleFilter
 {
     public:
-        ParticleFilter(float noise_std_dev);
-        void estimate(const Vehicle vehicle, const std::vector<Beacon>& beacons);
+        ParticleFilter();
+        void estimate(const Vehicle vehicle, std::vector<Beacon>& beacons);
         Pose2D get_estimate();
         std::vector<Position2D>& get_particles();
 
@@ -23,8 +22,6 @@ class ParticleFilter
 
         std::vector<Position2D> particles_;
         Pose2D prev_estimate_;
-        std::default_random_engine gen_;
-        std::normal_distribution<float> norm_dist_;
 };
 
 #endif

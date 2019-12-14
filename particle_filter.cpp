@@ -1,20 +1,25 @@
 #include <math.h>
+#include <stdio.h>
 
 #include "beacon.h"
 #include "particle_filter.h"
 #include "vehicle.h"
 
-ParticleFilter::ParticleFilter(float noise_std_dev) :
-    norm_dist_(0, noise_std_dev),
+ParticleFilter::ParticleFilter() :
     prev_estimate_(0, 0, 0)
 {
     particles_.clear();
 }
 
-void ParticleFilter::estimate(const Vehicle vehicle, const std::vector<Beacon>& beacons)
+void ParticleFilter::estimate(const Vehicle vehicle, std::vector<Beacon>& beacons)
 {
     float x = 0;
     float y = 0;
+
+    // Make all measurements
+    for (int b = 0; b < beacons.size(); b++) {
+        beacons[b].measure(vehicle.get_pose());
+    }
     particles_.clear();
     for (int b1 = 0; b1 < beacons.size(); b1++) {
         for (int b2 = b1 + 1; b2 < beacons.size(); b2++) {
@@ -51,28 +56,16 @@ std::vector<Position2D>& ParticleFilter::get_particles()
 Position2D ParticleFilter::triangulation(Vehicle veh, Beacon b1, Beacon b2, Beacon b3)
 {
     Position2D pos(0, 0);
-    float noise[3];
-    float dist[3];
-
-    // Calculate noise
-    noise[0] = norm_dist_(gen_);
-    noise[1] = norm_dist_(gen_);
-    noise[2] = norm_dist_(gen_);
-
-    // Measure distances, including noise
-    dist[0] = distance(veh.get_pose(), b1.get_position()) + noise[0];
-    dist[1] = distance(veh.get_pose(), b2.get_position()) + noise[1];
-    dist[2] = distance(veh.get_pose(), b3.get_position()) + noise[2];
 
     // Calculate 2 intersection points from beacons 1 and 2
     Position2D intersections[2] = { Position2D(0, 0), Position2D(0, 0) };
-    get_circle_intersections(b1.get_position(), dist[0],
-                             b2.get_position(), dist[1],
+    get_circle_intersections(b1.get_position(), b1.get_distance(),
+                             b2.get_position(), b2.get_distance(),
                              intersections);
 
     // Average using third beacon
-    float diff1 = distance(b3.get_position(), intersections[0]) - dist[2];
-    float diff2 = distance(b3.get_position(), intersections[1]) - dist[2];
+    float diff1 = distance(b3.get_position(), intersections[0]) - b3.get_distance();
+    float diff2 = distance(b3.get_position(), intersections[1]) - b3.get_distance();
     if (abs(diff1) < abs(diff2)) {
         float dx = b3.get_position().x - intersections[0].x;
         float dy = b3.get_position().y - intersections[0].y;

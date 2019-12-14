@@ -7,7 +7,7 @@ class Vehicle
 {
     public:
         Vehicle(Pose2D pose);
-        Pose2D get_pose();
+        Pose2D get_pose() const;
         void drive(float speed, float theta_dot, float dt);
 
     private:

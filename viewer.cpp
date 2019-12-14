@@ -87,7 +87,7 @@ void Viewer::draw_distances()
     set_colour(RED);
     for (int i = 0; i < beacons_.size(); i++) {
         Position2D pos = beacons_[i].get_position();
-        draw_circle(pos.x, pos.y, distance(pos, vehicle_.get_pose()));
+        draw_circle(pos.x, pos.y, beacons_[i].get_distance());
     }
 }
 

@@ -1,4 +1,5 @@
 #include <math.h>
+#include <stdio.h>
 
 #include "position.h"
 
@@ -30,12 +31,12 @@ void get_circle_intersections(const Position2D& center1, const float rad1,
     // Distance between circle centers
     float R = sqrt(centerdx * centerdx + centerdy * centerdy);
     if (rad1 > (R + rad2)) { // Circle 2 enclosed in circle 1
-        intersections[0].x = center2.x - centerdx * (rad1 - R - rad2);
-        intersections[0].y = center2.y - centerdy * (rad1 - R - rad2);
+        intersections[0].x = center2.x - centerdx * (rad1 - R - rad2) / R;
+        intersections[0].y = center2.y - centerdy * (rad1 - R - rad2) / R;
         intersections[1] = intersections[0];
     } else if (rad2 > (R + rad1)) { // Circle 1 enclosed in circle 2
-        intersections[0].x = center1.x + centerdx * (rad2 - R - rad1);
-        intersections[0].y = center1.y + centerdy * (rad2 - R - rad1);
+        intersections[0].x = center1.x + centerdx * (rad2 - R - rad1) / R;
+        intersections[0].y = center1.y + centerdy * (rad2 - R - rad1) / R;
         intersections[1] = intersections[0];
     } else if (R > (rad1 + rad2)) { // Imaginary intersection between small circles
         intersections[0].x = (center1.x * rad2 + center2.x * rad1) / (rad1 + rad2);

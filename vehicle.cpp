@@ -7,7 +7,7 @@ Vehicle::Vehicle(Pose2D pose) :
 {
 }
 
-Pose2D Vehicle::get_pose()
+Pose2D Vehicle::get_pose() const
 {
     return pose_;
 }

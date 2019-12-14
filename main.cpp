@@ -12,19 +12,17 @@
 int main(int argc, char* argv[])
 {
     const float MAX_DIST_M = 40; // -40 to 40
+    const float noise = 2; // Std dev of gaussian noise on distance measurements
 
     std::vector<Beacon> beacons;
-    beacons.push_back(Beacon(Position2D(10, 10)));
-    beacons.push_back(Beacon(Position2D(10, -10)));
-    beacons.push_back(Beacon(Position2D(-10, 10)));
-    beacons.push_back(Beacon(Position2D(-10, -10)));
-    beacons.push_back(Beacon(Position2D(0, 20)));
-    beacons.push_back(Beacon(Position2D(0, -20)));
+    beacons.push_back(Beacon(Position2D(-20, 20), noise));
+    beacons.push_back(Beacon(Position2D(20, 20), noise));
+    beacons.push_back(Beacon(Position2D(20, -20), noise));
+    beacons.push_back(Beacon(Position2D(-20, -20), noise));
 
-    Vehicle vehicle(Pose2D(0, -20, 0));
+    Vehicle vehicle(Pose2D(10, 20, 2.5));
 
-    float noise = 1; // Std dev of gaussian noise on distance measurements
-    ParticleFilter particle(noise);
+    ParticleFilter particle;
 
     Viewer viewer(vehicle, beacons, particle, MAX_DIST_M);
     float speed = 1;
@@ -32,9 +30,10 @@ int main(int argc, char* argv[])
     float dt = 1;
     while (1) {
         vehicle.drive(speed, theta_dot, dt);
+        printf("Vehicle at - x:%.3f, y:%.3f\n", vehicle.get_pose().x, vehicle.get_pose().y);
         particle.estimate(vehicle, beacons);
         viewer.update();
-        usleep(500000);
+        usleep(100000);
     }
 
     return 0;
