@@ -6,10 +6,11 @@
 #include "viewer.h"
 
 Viewer::Viewer(Vehicle& vehicle, std::vector<Beacon>& beacons,
-               ParticleFilter& particle, float size_m) :
+               ParticleFilter& particle, KalmanFilter& kalman, float size_m) :
     vehicle_(vehicle),
     beacons_(beacons),
     particle_(particle),
+    kalman_(kalman),
     size_m_(size_m),
     size_pix_(800)
 {
@@ -105,7 +106,7 @@ void Viewer::draw_estimate()
 {
     const float ESTIMATE_RADIUS_M = 0.7;
     set_colour(BLACK);
-    Pose2D pose = particle_.get_estimate();
+    Pose2D pose = kalman_.get_estimate();
     draw_circle(pose.x, pose.y, ESTIMATE_RADIUS_M);
 }
 

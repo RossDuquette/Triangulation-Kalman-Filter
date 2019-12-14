@@ -14,14 +14,14 @@ class ParticleFilter
     public:
         ParticleFilter();
         void estimate(const Vehicle vehicle, std::vector<Beacon>& beacons);
-        Pose2D get_estimate();
+        Position2D get_estimate();
         std::vector<Position2D>& get_particles();
 
     private:
         Position2D triangulation(Vehicle veh, Beacon b1, Beacon b2, Beacon b3);
 
         std::vector<Position2D> particles_;
-        Pose2D prev_estimate_;
+        Position2D prev_estimate_;
 };
 
 #endif

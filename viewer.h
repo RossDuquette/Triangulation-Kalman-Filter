@@ -5,13 +5,14 @@
 
 #include "beacon.h"
 #include "particle_filter.h"
+#include "kalman_filter.h"
 #include "vehicle.h"
 
 class Viewer
 {
     public:
         Viewer(Vehicle& vehicle, std::vector<Beacon>& beacons,
-               ParticleFilter& particle, float size_m);
+               ParticleFilter& particle, KalmanFilter& kalman, float size_m);
         void update();
 
     private:
@@ -27,6 +28,7 @@ class Viewer
         Vehicle& vehicle_;
         std::vector<Beacon>& beacons_;
         ParticleFilter& particle_;
+        KalmanFilter& kalman_;
         const float size_m_;
         const int size_pix_;
 

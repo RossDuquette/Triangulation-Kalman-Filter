@@ -6,7 +6,7 @@
 #include "vehicle.h"
 
 ParticleFilter::ParticleFilter() :
-    prev_estimate_(0, 0, 0)
+    prev_estimate_(0, 0)
 {
     particles_.clear();
 }
@@ -35,15 +35,11 @@ void ParticleFilter::estimate(const Vehicle vehicle, std::vector<Beacon>& beacon
     x *= 1 / float(particles_.size());
     y *= 1 / float(particles_.size());
 
-    float angle_drove = atan2(y - prev_estimate_.y, x - prev_estimate_.x);
-    float angle_diff = angle_drove - prev_estimate_.theta;
-    float theta = angle_drove + angle_diff;
-
     // Save estimate
-    prev_estimate_ = Pose2D(x, y, theta);
+    prev_estimate_ = Position2D(x, y);
 }
 
-Pose2D ParticleFilter::get_estimate()
+Position2D ParticleFilter::get_estimate()
 {
     return prev_estimate_;
 }
