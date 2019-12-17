@@ -7,16 +7,18 @@ LDFLAGS = -lglut -lGL
 DEPS = $(wildcard *.h)
 SRCS = $(wildcard *.cpp)
 
-OBJS = $(patsubst %.cpp,%.o,$(SRCS))
+OBJ_DIR = obj/
+$(shell mkdir -p $(OBJ_DIR))
+OBJS = $(patsubst %.cpp,$(OBJ_DIR)%.o,$(SRCS))
 
 all: $(PROGRAM_NAME)
 
-%.o: %.cpp $(DEPS)
+$(OBJ_DIR)%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(PROGRAM_NAME): $(OBJS)
 	$(LD) -o $@ $^ $(LDFLAGS)
 
 clean:
-	rm -f $(OBJS)
+	rm -rf $(OBJ_DIR)
 	rm -f $(PROGRAM_NAME)
