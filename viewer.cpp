@@ -104,7 +104,7 @@ void Viewer::draw_particles()
 
 void Viewer::draw_estimate()
 {
-    const float ESTIMATE_RADIUS_M = 0.7;
+    const float ESTIMATE_RADIUS_M = 0.5;
     set_colour(BLACK);
     Pose2D pose = kalman_.get_estimate();
     draw_circle(pose.x, pose.y, ESTIMATE_RADIUS_M);
