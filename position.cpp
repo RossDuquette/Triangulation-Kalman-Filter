@@ -22,6 +22,18 @@ float distance(const Position2D& pos1, const Position2D& pos2)
     return sqrt(del_x * del_x + del_y * del_y);
 }
 
+float theta_diff(float theta1, float theta2)
+{
+    float theta = theta2 - theta1;
+    while (theta > M_PI) {
+        theta -= 2 * M_PI;
+    }
+    while (theta < -1 * M_PI) {
+        theta += 2 * M_PI;
+    }
+    return theta;
+}
+
 void get_circle_intersections(const Position2D& center1, const float rad1,
                               const Position2D& center2, const float rad2,
                               Position2D* intersections)

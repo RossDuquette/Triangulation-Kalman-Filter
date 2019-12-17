@@ -21,13 +21,10 @@ void KalmanFilter::estimate(Position2D measurement, float speed, float theta_dot
 
     // Update
     float K = p0 / (p0 + r);
-    printf("K: %.3f\n", K);
     float x_hat = state_estimate.x + K * (measurement.x - state_estimate.x);
     float y_hat = state_estimate.y + K * (measurement.y - state_estimate.y);
-    float theta_hat = atan2(y_hat - prev_estimate_.y, x_hat - prev_estimate_.x);
-    if (theta_hat < 0) {
-        theta_hat += 2 * M_PI;
-    }
+    float theta_meas = atan2(y_hat - prev_estimate_.y, x_hat - prev_estimate_.x);
+    float theta_hat = state_estimate.theta + K * theta_diff(state_estimate.theta, theta_meas);
 
     p0 = (1 - K) * p0 + q;
     prev_estimate_ = Pose2D(x_hat, y_hat, theta_hat);
