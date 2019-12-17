@@ -28,8 +28,8 @@ int main(int argc, char* argv[])
     KalmanFilter kalman(init_state_variance, motion_variance, measurement_variance);
 
     Viewer viewer(vehicle, beacons, particle, kalman, MAX_DIST_M);
-    float speed = 2;
-    float theta_dot = 0.09;
+    float speed = 5;
+    float theta_dot = 0.25;
     float dt = 0.1;
     while (1) {
         vehicle.drive(speed, theta_dot, dt);
