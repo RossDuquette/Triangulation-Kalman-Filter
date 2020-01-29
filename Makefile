@@ -3,7 +3,7 @@ PROGRAM_NAME = particle_filter
 CC = g++
 LD = g++
 CFLAGS = -I. -g -O0
-LDFLAGS = -lglut -lGL
+LDFLAGS = -lglut -lGL -lncurses
 DEPS = $(wildcard *.h)
 SRCS = $(wildcard *.cpp)
 
