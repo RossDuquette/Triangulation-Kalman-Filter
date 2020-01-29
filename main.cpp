@@ -33,9 +33,6 @@ int main(int argc, char* argv[])
     float dt = 0.1;
     while (1) {
         vehicle.drive(speed, theta_dot, dt);
-        printf("Vehicle at - x:%.3f, y:%.3f, theta:%.2f\n",
-               vehicle.get_pose().x, vehicle.get_pose().y,
-               vehicle.get_pose().theta * 180 / M_PI);
         particle.estimate(vehicle, beacons);
         kalman.estimate(particle.get_estimate(), speed, theta_dot, dt);
         viewer.update();

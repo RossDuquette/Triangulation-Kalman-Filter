@@ -32,7 +32,5 @@ void KalmanFilter::estimate(Position2D measurement, float speed, float theta_dot
 
 Pose2D KalmanFilter::get_estimate()
 {
-    printf("Estimate at - x:%.3f, y:%.3f, theta:%.2f\n",
-           prev_estimate_.x, prev_estimate_.y, prev_estimate_.theta * 180 / M_PI);
     return prev_estimate_;
 }
